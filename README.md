@@ -48,7 +48,7 @@ phishing-detector/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/phishing-detector.git
+git clone https://github.com/AK2042/Phishing_Website_detector.git
 cd phishing-detector
 ```
 
