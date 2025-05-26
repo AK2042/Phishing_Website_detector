@@ -4,19 +4,19 @@ This project is a machine learning-based web application to detect phishing webs
 
 ---
 
-## 🚀 Features
+## Features
 
-* 🔗 Accepts a raw URL as input
-* 🧠 Uses lexical URL features + SSL certificate metadata
-* 📜 Extracts SSL features like issuer, validity period, and self-signed status
-* 🤖 Trained ML model (Random Forest / XGBoost / etc.) saved as a `.pkl` file
-* 🌐 Gradio web interface (no backend deployment needed)
-* ✅ Fast and lightweight prediction
-* 📊 Built using Kaggle-curated phishing URL dataset
+* Accepts a raw URL as input
+* Uses lexical URL features + SSL certificate metadata
+* Extracts SSL features like issuer, validity period, and self-signed status
+* Trained ML model (Random Forest / XGBoost / etc.) saved as a `.pkl` file
+* Gradio web interface (no backend deployment needed)
+* Fast and lightweight prediction
+* Built using Kaggle-curated phishing URL dataset
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 phishing-detector/
@@ -34,12 +34,12 @@ phishing-detector/
 
 ---
 
-## 🧠 How It Works
+## How It Works
 
 1. User inputs a URL.
 2. `feature_extraction.py` extracts URL-based features (length, special chars, etc.).
 3. Features are fed into a trained ML model (`phishing_model.pkl`).
-4. Output shown on Gradio UI: ✅ **Legit** or ❌ **Phishing**
+4. Output shown on Gradio UI: **Legit** or **Phishing**
 
 ---
 
@@ -68,17 +68,6 @@ Gradio will open the app in your browser at `http://127.0.0.1:7860`.
 
 ---
 
-## 🛡️ SSL Feature Extraction Example
-
-```python
-from ssl_features import get_ssl_features
-
-features = get_ssl_features("example.com")
-print(features)
-```
-
----
-
 ## Model Training (Optional)
 
 To retrain the model with new data:
@@ -90,7 +79,7 @@ python train_model.py
 This will generate a new `phishing_model.pkl`.
 link to dataset: https://www.kaggle.com/datasets/eswarchandt/phishing-website-detector
 
-## 🧩 Dependencies
+## Dependencies
 
 * `scikit-learn`
 * `gradio`
@@ -100,7 +89,7 @@ link to dataset: https://www.kaggle.com/datasets/eswarchandt/phishing-website-de
 
 ---
 
-## 📘 References
+## References
 
 * [PhishTank Dataset](https://www.phishtank.com/)
 * [Kaggle Phishing URLs Dataset](https://www.kaggle.com/datasets)
@@ -108,6 +97,6 @@ link to dataset: https://www.kaggle.com/datasets/eswarchandt/phishing-website-de
 
 ---
 
-## 📜 License
+## License
 
 MIT License. Use freely with credit.
