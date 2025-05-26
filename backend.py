@@ -18,25 +18,23 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from urllib.parse import quote_plus
 import shutil
-
-load_dotenv()
+import gradio as gr
 
 with open("phishing_detector.pkl", "rb") as f:
     model = pickle.load(f)
 
-app = FastAPI()
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"], 
-    allow_headers=["*"], 
-)
+FEATURE_NAMES = [
+    "UsingIP", "LongURL", "ShortURL", "Symbol@", "Redirecting//", "PrefixSuffix-", "SubDomains",
+    "HTTPS", "DomainRegLen", "Favicon", "NonStdPort", "HTTPSDomainURL", "RequestURL", "AnchorURL",
+    "LinksInScriptTags", "ServerFormHandler", "InfoEmail", "AbnormalURL", "WebsiteForwarding",
+    "StatusBarCust", "DisableRightClick", "UsingPopupWindow", "IframeRedirection", "AgeofDomain",
+    "DNSRecording", "WebsiteTraffic", "PageRank", "GoogleIndex", "LinksPointingToPage", "StatsReport"
+]
 
-@app.post("/predict")
-def predict_url(data: URLInput):
+
+def predict_url(data):
     try:
-        root_features = extract_url_features(data.url)
+        root_features = extract_url_features(data)
         print(f"Root URL features: {root_features}")
         print(type(root_features), len(root_features))
         df_features = pd.DataFrame([root_features], columns=FEATURE_NAMES)
@@ -46,14 +44,14 @@ def predict_url(data: URLInput):
         root_prediction = model.predict(df_features)
         root_label = "Legitimate" if root_prediction == 1 else "Phishing"
 
-        response = requests.get(data.url, timeout=10)
+        response = requests.get(data, timeout=10)
         response.raise_for_status()
 
         soup = BeautifulSoup(response.text, "html.parser")
         links = set()
         for a_tag in soup.find_all("a", href=True):
             href = a_tag["href"]
-            full_url = urljoin(data.url, href)
+            full_url = urljoin(data, href)
             if urlparse(full_url).scheme in ("http", "https"):
                 links.add(full_url)
 
@@ -64,17 +62,15 @@ def predict_url(data: URLInput):
                 df_f=pd.DataFrame([features], columns=FEATURE_NAMES)
                 pred = model.predict(df_f)
                 link_predictions[link] = "Legitimate" if pred == 1 else "Phishing"
-                print(f"Link: {link}, Prediction: {link_predictions[link]}")
             except Exception:
-                print(f"Error processing link: {link}")
                 link_predictions[link] = "Error"
 
         G = nx.DiGraph()
-        G.add_node(data.url, label=root_label)
+        G.add_node(data, label=root_label)
 
         for link, label in link_predictions.items():
             G.add_node(link, label=label)
-            G.add_edge(data.url, link)
+            G.add_edge(data, link)
 
         plt.figure(figsize=(12, 8))
         pos = nx.spring_layout(G, k=0.5)
@@ -102,12 +98,21 @@ def predict_url(data: URLInput):
         plt.savefig(filepath)
         plt.close()
 
-        return FileResponse(
-            path=filepath,
-            media_type="image/png",
-            filename=filename
-        )
+        return filepath
 
     except Exception as e:
-        return {"error": str(e)}
+        print("Error:", e)
+        return None
 
+
+def gradio_interface(url):
+    image_path = predict_url(url)
+    return image_path if image_path else "Error generating image."
+
+gr.Interface(
+    fn=gradio_interface,
+    inputs=gr.Textbox(label="Enter a URL"),
+    outputs=gr.Image(type="filepath", label="Phishing Graph"),
+    title="Phishing Detector (URL to Image)",
+    description="This app predicts phishing links from a URL and displays them as a graph."
+).launch()
