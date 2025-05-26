@@ -35,12 +35,7 @@ FEATURE_NAMES = [
 def predict_url(data):
     try:
         root_features = extract_url_features(data)
-        print(f"Root URL features: {root_features}")
-        print(type(root_features), len(root_features))
         df_features = pd.DataFrame([root_features], columns=FEATURE_NAMES)
-        print("DataFrame shape:", df_features.shape) 
-        print("df_features type:", type(df_features))
-        print("df_features values ndim:", df_features.values.ndim)
         root_prediction = model.predict(df_features)
         root_label = "Legitimate" if root_prediction == 1 else "Phishing"
 
