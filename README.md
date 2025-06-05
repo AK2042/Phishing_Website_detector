@@ -1,7 +1,7 @@
 # Phishing Website Detection using Machine Learning & SSL Certificate Analysis
 
 This project is a machine learning-based web application to detect phishing websites using both URL-based features and SSL certificate metadata. It uses a trained model and provides an easy-to-use **Gradio interface** to check whether a given link is **legitimate** or **phishing**.
-### Live Link - .[HuggingFace](https://ak2042-phishing-website-detector.hf.space/)
+### Live Link - [HuggingFace](https://ak2042-phishing-website-detector.hf.space/)
 ---
 
 ## Features
