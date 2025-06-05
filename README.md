@@ -7,9 +7,8 @@ This project is a machine learning-based web application to detect phishing webs
 ## Features
 
 * Accepts a raw URL as input
-* Uses lexical URL features + SSL certificate metadata
-* Extracts SSL features like issuer, validity period, and self-signed status
-* Trained ML model (Random Forest / XGBoost / etc.) saved as a `.pkl` file
+* Uses lexical URL features
+* Trained ML model Random Forest Classification saved as a `.pkl` file
 * Gradio web interface (no backend deployment needed)
 * Fast and lightweight prediction
 * Built using Kaggle-curated phishing URL dataset
@@ -21,12 +20,11 @@ This project is a machine learning-based web application to detect phishing webs
 ```
 phishing-detector/
 │
-├── model/
-│   └── phishing_model.pkl         # Trained ML model
+├── phishing_model.pkl         # Trained ML model
 │
 ├── app.py                         # Main Gradio app
 ├── feature_extraction.py         # Lexical feature extractor for URLs
-├── train_model.py                 # (Optional) Script to retrain model
+├── model.py                 # (Optional) Script to retrain model
 │
 ├── README.md                      # You are here!
 └── requirements.txt               # Python dependencies
