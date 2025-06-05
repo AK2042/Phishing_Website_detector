@@ -49,7 +49,7 @@ phishing-detector/
 
 ```bash
 git clone https://github.com/AK2042/Phishing_Website_detector.git
-cd phishing-detector
+cd Phishing_Website_detector
 ```
 
 ### 2. Install Dependencies
@@ -73,7 +73,7 @@ Gradio will open the app in your browser at `http://127.0.0.1:7860`.
 To retrain the model with new data:
 
 ```bash
-python train_model.py
+python model.py
 ```
 
 This will generate a new `phishing_model.pkl`.
